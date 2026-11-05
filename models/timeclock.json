@@ -1,0 +1,707 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "time clock",
+            "intents": [
+                {
+                    "name": "TellTaskTimeIntent",
+                    "slots": [
+                        {
+                            "name": "TaskName",
+                            "type": "LIST_OF_TASK_NAMES"
+                        }
+                    ],
+                    "samples": [
+                        "give me the numbers for {TaskName}",
+                        "give me the time card for {TaskName}",
+                        "how do my hours look for {TaskName}",
+                        "time card for {TaskName}",
+                        "numbers for {TaskName}",
+                        "hours for {TaskName}",
+                        "read the hours for {TaskName}",
+                        "recite the hours for {TaskName}",
+                        "say the numbers for {TaskName}",
+                        "share my current numbers for {TaskName}",
+                        "state my hours for {TaskName}",
+                        "tell me current hours for {TaskName}",
+                        "tell me the current hours for {TaskName}",
+                        "tell me the hours for {TaskName}",
+                        "the current hours for {TaskName}",
+                        "the hours for {TaskName}",
+                        "my hours for {TaskName}",
+                        "view hours for {TaskName}",
+                        "what are the hours for {TaskName}",
+                        "what hours do i have for {TaskName}",
+                        "what's the hours for {TaskName}"
+                    ]
+                },
+                {
+                    "name": "AddHoursIntent",
+                    "slots": [
+                        {
+                            "name": "TaskName",
+                            "type": "LIST_OF_TASK_NAMES"
+                        },
+                        {
+                            "name": "HoursNumber",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "add {HoursNumber} hours {TaskName}",
+                        "add {HoursNumber} hours to {TaskName}",
+                        "add {HoursNumber} hours for {TaskName}",
+                        "add {HoursNumber} hours of {TaskName}",
+                        "add {HoursNumber} hour {TaskName}",
+                        "add {HoursNumber} hour to {TaskName}",
+                        "add {HoursNumber} hour for {TaskName}",
+                        "add {HoursNumber} hour of {TaskName}"
+                    ]
+                },
+                {
+                    "name": "AddMinutesIntent",
+                    "slots": [
+                        {
+                            "name": "TaskName",
+                            "type": "LIST_OF_TASK_NAMES"
+                        },
+                        {
+                            "name": "MinutesNumber",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "add {MinutesNumber} minutes {TaskName}",
+                        "add {MinutesNumber} minutes to {TaskName}",
+                        "add {MinutesNumber} minutes for {TaskName}",
+                        "add {MinutesNumber} minutes of {TaskName}",
+                        "add {MinutesNumber} minute {TaskName}",
+                        "add {MinutesNumber} minute to {TaskName}",
+                        "add {MinutesNumber} minute for {TaskName}",
+                        "add {MinutesNumber} minute of {TaskName}",
+                        "add a {MinutesNumber} minute {TaskName}"
+                    ]
+                },
+                {
+                    "name": "AddHoursMinutesIntent",
+                    "slots": [
+                        {
+                            "name": "TaskName",
+                            "type": "LIST_OF_TASK_NAMES"
+                        },
+                        {
+                            "name": "HoursNumber",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "MinutesNumber",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "add {HoursNumber} hours {MinutesNumber} minutes {TaskName}",
+                        "add {HoursNumber} hours {MinutesNumber} minutes to {TaskName}",
+                        "add {HoursNumber} hours {MinutesNumber} minutes for {TaskName}",
+                        "add {HoursNumber} hours {MinutesNumber} minutes of {TaskName}",
+                        "add {HoursNumber} hour {MinutesNumber} minutes {TaskName}",
+                        "add {HoursNumber} hour {MinutesNumber} minutes to {TaskName}",
+                        "add {HoursNumber} hour {MinutesNumber} minutes for {TaskName}",
+                        "add {HoursNumber} hour {MinutesNumber} minutes of {TaskName}",
+                        "add {HoursNumber} hour {MinutesNumber} minute {TaskName}",
+                        "add {HoursNumber} hour {MinutesNumber} minute to {TaskName}",
+                        "add {HoursNumber} hour {MinutesNumber} minute for {TaskName}",
+                        "add {HoursNumber} hour {MinutesNumber} minute of {TaskName}",
+                        "add {HoursNumber} hours and {MinutesNumber} minutes {TaskName}",
+                        "add {HoursNumber} hours and {MinutesNumber} minutes to {TaskName}",
+                        "add {HoursNumber} hours and {MinutesNumber} minutes for {TaskName}",
+                        "add {HoursNumber} hours and {MinutesNumber} minutes of {TaskName}",
+                        "add {HoursNumber} hour and {MinutesNumber} minutes {TaskName}",
+                        "add {HoursNumber} hour and {MinutesNumber} minutes to {TaskName}",
+                        "add {HoursNumber} hour and {MinutesNumber} minutes for {TaskName}",
+                        "add {HoursNumber} hour and {MinutesNumber} minutes of {TaskName}",
+                        "add {HoursNumber} hour and {MinutesNumber} minute {TaskName}",
+                        "add {HoursNumber} hour and {MinutesNumber} minute to {TaskName}",
+                        "add {HoursNumber} hour and {MinutesNumber} minute for {TaskName}",
+                        "add {HoursNumber} hour and {MinutesNumber} minute of {TaskName}"
+                    ]
+                },
+                {
+                    "name": "AddOneHourIntent",
+                    "slots": [
+                        {
+                            "name": "TaskName",
+                            "type": "LIST_OF_TASK_NAMES"
+                        }
+                    ],
+                    "samples": [
+                        "add an hour {TaskName}",
+                        "add an hour to {TaskName}",
+                        "add an hour for {TaskName}",
+                        "add an hour of {TaskName}"
+                    ]
+                },
+                {
+                    "name": "AddOneHourAndAHalfIntent",
+                    "slots": [
+                        {
+                            "name": "TaskName",
+                            "type": "LIST_OF_TASK_NAMES"
+                        }
+                    ],
+                    "samples": [
+                        "add an hour and a half {TaskName}",
+                        "add an hour and a half to {TaskName}",
+                        "add an hour and a half for {TaskName}",
+                        "add an hour and a half of {TaskName}"
+                    ]
+                },
+                {
+                    "name": "AddOneHourMinutesIntent",
+                    "slots": [
+                        {
+                            "name": "MinutesNumber",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "TaskName",
+                            "type": "LIST_OF_TASK_NAMES"
+                        }
+                    ],
+                    "samples": [
+                        "add an hour {MinutesNumber} {TaskName}",
+                        "add an hour {MinutesNumber} to {TaskName}",
+                        "add an hour {MinutesNumber} for {TaskName}",
+                        "add an hour {MinutesNumber} of {TaskName}",
+                        "add an hour and {MinutesNumber} minutes {TaskName}",
+                        "add an hour and {MinutesNumber} minutes to {TaskName}",
+                        "add an hour and {MinutesNumber} minutes for {TaskName}",
+                        "add an hour and {MinutesNumber} minutes of {TaskName}",
+                        "add an hour and {MinutesNumber} minute {TaskName}",
+                        "add an hour and {MinutesNumber} minute to {TaskName}",
+                        "add an hour and {MinutesNumber} minute for {TaskName}",
+                        "add an hour and {MinutesNumber} minute of {TaskName}"
+                    ]
+                },
+                {
+                    "name": "AddHalfHourIntent",
+                    "slots": [
+                        {
+                            "name": "TaskName",
+                            "type": "LIST_OF_TASK_NAMES"
+                        }
+                    ],
+                    "samples": [
+                        "add a half hour {TaskName}",
+                        "add a half hour to {TaskName}",
+                        "add a half hour for {TaskName}",
+                        "add a half hour of {TaskName}"
+                    ]
+                },
+                {
+                    "name": "TellTimesIntent",
+                    "slots": [],
+                    "samples": [
+                        "most",
+                        "greatest",
+                        "give me the numbers",
+                        "give me the time card",
+                        "give me what has the most",
+                        "how do my hours look",
+                        "least",
+                        "smallest",
+                        "time card",
+                        "list current hours",
+                        "numbers",
+                        "hours",
+                        "list",
+                        "read the hours",
+                        "recite the hours",
+                        "say the numbers",
+                        "share my current numbers",
+                        "standing",
+                        "state my hours",
+                        "state the most",
+                        "tell me current hours",
+                        "tell me the current hours",
+                        "tell me the hours",
+                        "tell me what has the most",
+                        "tell me what has the least",
+                        "the current hours",
+                        "the list",
+                        "the hours",
+                        "my list",
+                        "my hours",
+                        "tell me my hours",
+                        "view hours",
+                        "what are the hours",
+                        "what hours do i have",
+                        "what's the hours",
+                        "which one is the most",
+                        "which one is the least",
+                        "what is the most",
+                        "what has got the most hours",
+                        "what has the greatest"
+                    ]
+                },
+                {
+                    "name": "ClearTimeIntent",
+                    "slots": [],
+                    "samples": [
+                        "clear",
+                        "clear hours",
+                        "clear times",
+                        "clear numbers",
+                        "clear time card",
+                        "clear last hours",
+                        "clear last times",
+                        "clear last numbers",
+                        "clear last time card",
+                        "clear my hours",
+                        "clear my times",
+                        "clear my numbers",
+                        "clear my time card",
+                        "clear old hours",
+                        "clear old times",
+                        "clear old numbers",
+                        "clear old time card",
+                        "clear the hours",
+                        "clear the times",
+                        "clear the numbers",
+                        "clear the time card",
+                        "clear past hours",
+                        "clear past times",
+                        "clear past numbers",
+                        "clear past time card",
+                        "clear those hours",
+                        "clear those times",
+                        "clear those numbers",
+                        "clear that time card",
+                        "clear the time",
+                        "delete",
+                        "delete hours",
+                        "delete times",
+                        "delete numbers",
+                        "delete time card",
+                        "delete last hours",
+                        "delete last times",
+                        "delete last numbers",
+                        "delete last time card",
+                        "delete my hours",
+                        "delete my times",
+                        "delete my numbers",
+                        "delete my time card",
+                        "delete old hours",
+                        "delete old times",
+                        "delete old numbers",
+                        "delete old time card",
+                        "delete the hours",
+                        "delete the times",
+                        "delete the numbers",
+                        "delete the time card",
+                        "delete past hours",
+                        "delete past times",
+                        "delete past numbers",
+                        "delete past time card",
+                        "delete those hours",
+                        "delete those times",
+                        "delete those numbers",
+                        "delete that time card",
+                        "delete the time",
+                        "erase",
+                        "erase hours",
+                        "erase times",
+                        "erase numbers",
+                        "erase time card",
+                        "erase last hours",
+                        "erase last times",
+                        "erase last numbers",
+                        "erase last time card",
+                        "erase my hours",
+                        "erase my times",
+                        "erase my numbers",
+                        "erase my time card",
+                        "erase old hours",
+                        "erase old times",
+                        "erase old numbers",
+                        "erase old time card",
+                        "erase the hours",
+                        "erase the times",
+                        "erase the numbers",
+                        "erase the time card",
+                        "erase past hours",
+                        "erase past times",
+                        "erase past numbers",
+                        "erase past time card",
+                        "erase those hours",
+                        "erase those times",
+                        "erase those numbers",
+                        "erase that time card",
+                        "erase the time",
+                        "forget",
+                        "forget hours",
+                        "forget times",
+                        "forget numbers",
+                        "forget time card",
+                        "forget last hours",
+                        "forget last times",
+                        "forget last numbers",
+                        "forget last time card",
+                        "forget my hours",
+                        "forget my times",
+                        "forget my numbers",
+                        "forget my time card",
+                        "forget old hours",
+                        "forget old times",
+                        "forget old numbers",
+                        "forget old time card",
+                        "forget the hours",
+                        "forget the times",
+                        "forget the numbers",
+                        "forget the time card",
+                        "forget past hours",
+                        "forget past times",
+                        "forget past numbers",
+                        "forget past time card",
+                        "forget those hours",
+                        "forget those times",
+                        "forget those numbers",
+                        "forget that time card",
+                        "forget the time",
+                        "remove",
+                        "remove hours",
+                        "remove times",
+                        "remove numbers",
+                        "remove time card",
+                        "remove last hours",
+                        "remove last times",
+                        "remove last numbers",
+                        "remove last time card",
+                        "remove my hours",
+                        "remove my times",
+                        "remove my numbers",
+                        "remove my time card",
+                        "remove old hours",
+                        "remove old times",
+                        "remove old numbers",
+                        "remove old time card",
+                        "remove the hours",
+                        "remove the times",
+                        "remove the numbers",
+                        "remove the time card",
+                        "remove past hours",
+                        "remove past times",
+                        "remove past numbers",
+                        "remove past time card",
+                        "remove those hours",
+                        "remove those times",
+                        "remove those numbers",
+                        "remove that time card",
+                        "remove the time",
+                        "reset",
+                        "reset hours",
+                        "reset times",
+                        "reset numbers",
+                        "reset time card",
+                        "reset last hours",
+                        "reset last times",
+                        "reset last numbers",
+                        "reset last time card",
+                        "reset my hours",
+                        "reset my times",
+                        "reset my numbers",
+                        "reset my time card",
+                        "reset old hours",
+                        "reset old times",
+                        "reset old numbers",
+                        "reset old time card",
+                        "reset the hours",
+                        "reset the times",
+                        "reset the numbers",
+                        "reset the time card",
+                        "reset past hours",
+                        "reset past times",
+                        "reset past numbers",
+                        "reset past time card",
+                        "reset those hours",
+                        "reset those times",
+                        "reset those numbers",
+                        "reset that time card",
+                        "reset the time",
+                        "wipe",
+                        "wipe hours",
+                        "wipe times",
+                        "wipe numbers",
+                        "wipe time card",
+                        "wipe last hours",
+                        "wipe last times",
+                        "wipe last numbers",
+                        "wipe last time card",
+                        "wipe my hours",
+                        "wipe my times",
+                        "wipe my numbers",
+                        "wipe my time card",
+                        "wipe old hours",
+                        "wipe old times",
+                        "wipe old numbers",
+                        "wipe old time card",
+                        "wipe the hours",
+                        "wipe the times",
+                        "wipe the numbers",
+                        "wipe the time card",
+                        "wipe past hours",
+                        "wipe past times",
+                        "wipe past numbers",
+                        "wipe past time card",
+                        "wipe those hours",
+                        "wipe those times",
+                        "wipe those numbers",
+                        "wipe that time card",
+                        "wipe the time"
+                    ]
+                },
+                {
+                    "name": "TaskListIntent",
+                    "slots": [],
+                    "samples": [
+                        "what tasks can i track",
+                        "all tasks",
+                        "what are the tasks",
+                        "what tasks",
+                        "what tasks are available",
+                        "what can i track",
+                        "what time can i track"
+                    ]
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "LIST_OF_TASK_NAMES",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "accounting",
+                                "synonyms": [
+                                    "bookkeeping",
+                                    "invoicing",
+                                    "billing"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "administrative",
+                                "synonyms": [
+                                    "admin",
+                                    "paperwork"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "break",
+                                "synonyms": [
+                                    "rest break",
+                                    "coffee break"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cleaning"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "customer service",
+                                "synonyms": [
+                                    "support",
+                                    "customer support"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "data entry"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "design"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "email",
+                                "synonyms": [
+                                    "emails"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "errands"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "exercise"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "filing"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "lunch",
+                                "synonyms": [
+                                    "meal break",
+                                    "lunch break",
+                                    "meal",
+                                    "breakfast",
+                                    "dinner"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "mail"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "marketing"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "meetings",
+                                "synonyms": [
+                                    "meeting"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "organizing"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "phone calls ",
+                                "synonyms": [
+                                    "phone call",
+                                    "calls"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "planning"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "programming",
+                                "synonyms": [
+                                    "coding",
+                                    "development"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "research"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "reviewing",
+                                "synonyms": [
+                                    "code review"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "sales"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "shipping"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "training"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "travel",
+                                "synonyms": [
+                                    "commute",
+                                    "commuting",
+                                    "driving"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "typing"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "writing"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "work"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "ClearTimeIntent",
+                    "confirmationRequired": true,
+                    "prompts": {
+                        "confirmation": "Confirm.Intent.ClearTimeIntent"
+                    },
+                    "slots": []
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Confirm.Intent.ClearTimeIntent",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Are you sure you want to clear all your hours?"
+                    }
+                ]
+            }
+        ]
+    }
+}

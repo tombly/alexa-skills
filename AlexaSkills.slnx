@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AlexaSkills.Functions/AlexaSkills.Functions.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AlexaSkills.Tests/AlexaSkills.Tests.csproj" />
+  </Folder>
+</Solution>
