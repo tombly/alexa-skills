@@ -38,3 +38,5 @@ azd up
 ```
 
 Then for each skill in the Alexa developer console, go to **Build → Endpoint**, choose **HTTPS**, and enter `$(azd env get-value SKILL_ENDPOINT_BASE_URL)/timeclock` (or `/majorsystem`). For the SSL certificate type, choose *My development endpoint is a sub-domain of a domain that has a wildcard certificate from a certificate authority*.
+
+On devices with a screen, Time Clock also shows your hours as a list. That needs the **Alexa Presentation Language** interface, under **Build → Interfaces** in Time Clock's console. The layout is `src/AlexaSkills.Functions/Skills/TimeClock/TimeCardScreen.json`.

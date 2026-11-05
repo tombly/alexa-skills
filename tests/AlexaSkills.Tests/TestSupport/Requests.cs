@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json;
 using AlexaSkills.Alexa;
 
 namespace AlexaSkills.Tests.TestSupport;
@@ -20,6 +21,21 @@ static class Requests
     /// </summary>
     public static SkillRequest InConversation(this SkillRequest request) =>
         request with { Session = request.Session! with { New = false } };
+
+    /// <summary>
+    /// The same request from a device with a screen, to a skill version with APL turned on.
+    /// </summary>
+    public static SkillRequest OnScreen(this SkillRequest request) =>
+        request with
+        {
+            Context = new RequestContext(new SystemState(
+                new Application(SkillId),
+                new User(UserId),
+                new Device(new Dictionary<string, JsonElement>
+                {
+                    ["Alexa.Presentation.APL"] = JsonDocument.Parse("""{ "runtime": { "maxVersion": "2024.3" } }""").RootElement,
+                }))),
+        };
 
     /// <summary>
     /// The same intent after the user answered Alexa's confirmation prompt, with CONFIRMED or DENIED.

@@ -24,4 +24,18 @@ public static class TimePhrases
         }
         return string.Join(" and ", parts);
     }
+
+    /// <summary>
+    /// How a screen shows an amount of time, e.g. 140 minutes is "2 hr 20 min".
+    /// </summary>
+    public static string ForScreen(long totalMinutes)
+    {
+        var (hours, minutes) = Math.DivRem(totalMinutes, 60);
+        return (hours, minutes) switch
+        {
+            (0, _) => $"{minutes} min",
+            (_, 0) => $"{hours} hr",
+            _ => $"{hours} hr {minutes} min",
+        };
+    }
 }

@@ -44,13 +44,15 @@ public sealed class TimeClockSkill(ITimeCardStore store) : Skill
 
         return intent.Name switch
         {
-            "TellTimesIntent" => TellTimes(await LoadAsync(request, cancellationToken)),
+            "TellTimesIntent" => TellTimes(await LoadAsync(request, cancellationToken), request.SupportsApl),
             "TellTaskTimeIntent" => TellTaskTime(await LoadAsync(request, cancellationToken), intent),
             "ClearTimeIntent" => await ClearAsync(request, intent, inConversation, cancellationToken),
             "TaskListIntent" => TaskList(),
             "AMAZON.CancelIntent" or "AMAZON.StopIntent" => inConversation
                 ? Reply.Tell("Okay. Whenever you're ready, you can start adding hours for your tasks.")
                 : Reply.End(),
+            // Screen devices send this for "go home" or the home button while the time card is up.
+            "AMAZON.NavigateHomeIntent" => Reply.End(),
             _ => Reply.Ask($"{Help} So, how can I help?", "How can I help?"),
         };
     }
@@ -104,20 +106,18 @@ public sealed class TimeClockSkill(ITimeCardStore store) : Skill
             : Reply.Tell("cleared all your hours");
     }
 
-    private static SkillResponse TellTimes(TimeCard timeCard)
+    private static SkillResponse TellTimes(TimeCard timeCard, bool onScreen)
     {
         var totals = timeCard.TasksWithTime()
             .Select(entry => (entry.Task, Time: TimePhrases.ForMinutes(entry.Minutes)))
             .ToList();
 
-        if (totals.Count == 0)
-        {
-            return Reply.Tell("No tasks have any hours yet", new Card(CardTitle, "All tasks have zero hours"));
-        }
+        var (speech, card) = totals.Count == 0
+            ? ("No tasks have any hours yet", new Card(CardTitle, "All tasks have zero hours"))
+            : (string.Join(", ", totals.Select(entry => $"{entry.Task}: {entry.Time}")),
+                new Card(CardTitle, string.Join('\n', totals.Select(entry => $"{entry.Task} : {entry.Time}"))));
 
-        return Reply.Tell(
-            string.Join(", ", totals.Select(entry => $"{entry.Task}: {entry.Time}")),
-            new Card(CardTitle, string.Join('\n', totals.Select(entry => $"{entry.Task} : {entry.Time}"))));
+        return onScreen ? Reply.Show(speech, TimeCardScreen.For(timeCard), card) : Reply.Tell(speech, card);
     }
 
     private static SkillResponse TellTaskTime(TimeCard timeCard, Intent intent)
