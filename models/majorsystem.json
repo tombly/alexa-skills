@@ -1,0 +1,84 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "major system",
+            "intents": [
+                {
+                    "name": "GetWordForIntent",
+                    "slots": [
+                        {
+                            "name": "mynumber",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "how can i remember {mynumber}",
+                        "how do i remember {mynumber}",
+                        "how would i remember {mynumber}",
+                        "help me remember {mynumber}",
+                        "remember {mynumber}",
+                        "what is the word for {mynumber}",
+                        "what's the word for {mynumber}",
+                        "what are the words for {mynumber}",
+                        "give me a word for {mynumber}",
+                        "a word for {mynumber}",
+                        "words for {mynumber}",
+                        "{mynumber}"
+                    ]
+                },
+                {
+                    "name": "GetInstructionsIntent",
+                    "slots": [
+                        {
+                            "name": "mynumber",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "what sound is {mynumber}",
+                        "what sound is {mynumber} associated with",
+                        "what sound is associated with {mynumber}",
+                        "what is the sound for {mynumber}",
+                        "what's the sound for {mynumber}",
+                        "what are the sounds for {mynumber}",
+                        "what sounds are {mynumber}",
+                        "what sound goes with {mynumber}",
+                        "which sound is {mynumber}",
+                        "the sound for {mynumber}",
+                        "sound for {mynumber}"
+                    ]
+                },
+                {
+                    "name": "HowItWorksIntent",
+                    "slots": [],
+                    "samples": [
+                        "how does this work",
+                        "how does it work",
+                        "how does this system work",
+                        "explain how this works",
+                        "tell me how it works",
+                        "how do i use this",
+                        "how do i get started",
+                        "what is this"
+                    ]
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "slots": [],
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "slots": [],
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "slots": [],
+                    "samples": []
+                }
+            ],
+            "types": []
+        }
+    }
+}
