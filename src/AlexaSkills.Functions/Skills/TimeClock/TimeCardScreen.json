@@ -1,0 +1,24 @@
+{
+    "type": "APL",
+    "version": "2023.3",
+    "import": [
+        {
+            "name": "alexa-layouts",
+            "version": "1.7.0"
+        }
+    ],
+    "mainTemplate": {
+        "parameters": [
+            "timeCard"
+        ],
+        "items": [
+            {
+                "type": "AlexaTextList",
+                "headerTitle": "${timeCard.title}",
+                "headerSubtitle": "${timeCard.subtitle}",
+                "hideOrdinal": true,
+                "listItems": "${timeCard.items}"
+            }
+        ]
+    }
+}

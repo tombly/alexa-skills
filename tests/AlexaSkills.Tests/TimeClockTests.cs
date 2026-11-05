@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using AlexaSkills.Alexa;
 using AlexaSkills.Skills.TimeClock;
 using AlexaSkills.Tests.TestSupport;
@@ -89,6 +91,56 @@ public class TimeClockTests
 
         Assert.Equal("meetings: 2 hours and 20 minutes, email: 10 minutes", response.Response.OutputSpeech?.Text);
         Assert.Equal(new Card("Time Card", "meetings : 2 hours and 20 minutes\nemail : 10 minutes"), response.Response.Card);
+        Assert.Null(response.Response.Directives);
+        Assert.True(response.Response.ShouldEndSession);
+    }
+
+    [Fact]
+    public async Task Shows_the_time_card_on_a_screen()
+    {
+        await Send(Requests.IntentRequest("AddMinutesIntent", ("TaskName", "email"), ("MinutesNumber", "10")));
+        await Send(Requests.IntentRequest("AddHoursMinutesIntent", ("TaskName", "data entry"), ("HoursNumber", "2"), ("MinutesNumber", "20")));
+
+        var response = await Send(Requests.IntentRequest("TellTimesIntent").OnScreen());
+
+        var screen = Assert.Single(response.Response.Directives!);
+        Assert.Equal("Alexa.Presentation.APL.RenderDocument", screen.Type);
+        AssertJsonEqual("""
+            {
+              "timeCard": {
+                "title": "Time Card",
+                "subtitle": "Total: 2 hr 30 min",
+                "items": [
+                  { "primaryText": "Data Entry", "secondaryText": "2 hr 20 min" },
+                  { "primaryText": "Email", "secondaryText": "10 min" }
+                ]
+              }
+            }
+            """, JsonSerializer.Serialize(screen.Datasources, AlexaJson.Options));
+        // Alexa still reads the hours out, and leaving the session open keeps the list on screen.
+        Assert.Equal("data entry: 2 hours and 20 minutes, email: 10 minutes", response.Response.OutputSpeech?.Text);
+        Assert.Null(response.Response.ShouldEndSession);
+    }
+
+    [Fact]
+    public async Task Shows_an_empty_time_card_on_a_screen()
+    {
+        var response = await Send(Requests.IntentRequest("TellTimesIntent").OnScreen());
+
+        var timeCard = JsonSerializer.SerializeToNode(Assert.Single(response.Response.Directives!).Datasources, AlexaJson.Options)!["timeCard"]!;
+        Assert.Equal("No tasks have any hours yet", (string?)timeCard["subtitle"]);
+        Assert.Empty(timeCard["items"]!.AsArray());
+    }
+
+    [Fact]
+    public void The_screen_document_takes_the_time_card_data_source()
+    {
+        var screen = TimeCardScreen.For(TimeCard.FromJson(null));
+
+        var parameters = screen.Document!["mainTemplate"]!["parameters"]!.AsArray().Select(parameter => (string?)parameter);
+        var dataSources = JsonSerializer.SerializeToNode(screen.Datasources, AlexaJson.Options)!.AsObject().Select(property => property.Key);
+        Assert.Equal("APL", (string?)screen.Document["type"]);
+        Assert.Equal(parameters, dataSources);
     }
 
     [Fact]
@@ -203,4 +255,7 @@ public class TimeClockTests
     }
 
     private Task<SkillResponse> Send(SkillRequest request) => _skill.HandleAsync(request, TestContext.Current.CancellationToken);
+
+    private static void AssertJsonEqual(string expected, string actual) =>
+        Assert.True(JsonNode.DeepEquals(JsonNode.Parse(expected), JsonNode.Parse(actual)), actual);
 }

@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace AlexaSkills.Alexa;
 
 // The parts of Alexa's request envelope these skills use:
@@ -13,6 +15,12 @@ public sealed record SkillRequest(Session? Session, RequestContext? Context, Req
     /// True when this request opened the session, e.g. a one-shot "Alexa, ask time clock to…".
     /// </summary>
     public bool IsNewSession => Session?.New ?? true;
+
+    /// <summary>
+    /// True when the device has a screen that can show APL documents. Alexa only says so to a skill
+    /// version with the APL interface turned on, and an APL directive sent to anything else is an error.
+    /// </summary>
+    public bool SupportsApl => Context?.System?.Device?.SupportedInterfaces?.ContainsKey("Alexa.Presentation.APL") == true;
 }
 
 public sealed record Session(bool New, Application? Application, User? User);
@@ -23,7 +31,10 @@ public sealed record User(string UserId);
 
 public sealed record RequestContext(SystemState? System);
 
-public sealed record SystemState(Application? Application, User? User);
+public sealed record SystemState(Application? Application, User? User, Device? Device = null);
+
+/// <param name="SupportedInterfaces">Each interface the device supports, e.g. "Alexa.Presentation.APL", with its details.</param>
+public sealed record Device(IReadOnlyDictionary<string, JsonElement>? SupportedInterfaces);
 
 /// <param name="Reason">Why a SessionEndedRequest ended the session: USER_INITIATED, ERROR or EXCEEDED_MAX_REPROMPTS.</param>
 /// <param name="Error">What went wrong, on a SessionEndedRequest with reason ERROR or a System.ExceptionEncountered.</param>

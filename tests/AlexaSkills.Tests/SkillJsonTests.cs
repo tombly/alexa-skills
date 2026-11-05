@@ -118,6 +118,53 @@ public class SkillJsonTests
         Assert.Equal("15", request.Request.Intent?.SlotValue("MinutesNumber"));
         Assert.Equal("lunch", request.Request.Intent?.ResolvedSlotValue("TaskName"));
         Assert.Equal("15", request.Request.Intent?.ResolvedSlotValue("MinutesNumber"));
+        Assert.False(request.SupportsApl);
+    }
+
+    [Fact]
+    public void Reads_whether_the_device_can_show_apl()
+    {
+        const string json = """
+            {
+              "version": "1.0",
+              "context": {
+                "System": {
+                  "device": {
+                    "deviceId": "amzn1.ask.device.test",
+                    "supportedInterfaces": { "Alexa.Presentation.APL": { "runtime": { "maxVersion": "2024.3" } } }
+                  }
+                }
+              },
+              "request": { "type": "LaunchRequest", "requestId": "amzn1.echo-api.request.test", "timestamp": "2026-11-01T17:04:05Z", "locale": "en-US" }
+            }
+            """;
+
+        Assert.True(JsonSerializer.Deserialize<SkillRequest>(json, AlexaJson.Options)!.SupportsApl);
+    }
+
+    [Fact]
+    public void Screens_carry_the_apl_document_and_leave_the_session_open()
+    {
+        var screen = Directive.RenderDocument("token", JsonNode.Parse("""{ "type": "APL" }""")!, new { list = new { title = "Title" } });
+
+        var json = JsonSerializer.Serialize(Reply.Show("Hello", screen), AlexaJson.Options);
+
+        AssertJsonEqual("""
+            {
+              "version": "1.0",
+              "response": {
+                "outputSpeech": { "type": "PlainText", "text": "Hello" },
+                "directives": [
+                  {
+                    "type": "Alexa.Presentation.APL.RenderDocument",
+                    "token": "token",
+                    "document": { "type": "APL" },
+                    "datasources": { "list": { "title": "Title" } }
+                  }
+                ]
+              }
+            }
+            """, json);
     }
 
     [Fact]

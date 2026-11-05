@@ -1,3 +1,5 @@
+using System.Text.Json.Nodes;
+
 namespace AlexaSkills.Alexa;
 
 // https://developer.amazon.com/docs/alexa/custom-skills/request-and-response-json-reference.html#response-format
@@ -30,7 +32,15 @@ public sealed record Card(string Title, string Content)
 
 public sealed record Reprompt(OutputSpeech OutputSpeech);
 
-public sealed record Directive(string Type);
+/// <param name="Token">For RenderDocument: a name for the document on screen.</param>
+/// <param name="Document">For RenderDocument: the APL document.</param>
+/// <param name="Datasources">For RenderDocument: the data the document binds to, by name.</param>
+public sealed record Directive(string Type, string? Token = null, JsonNode? Document = null, object? Datasources = null)
+{
+    // https://developer.amazon.com/docs/alexa/alexa-presentation-language/apl-interface.html#renderdocument-directive
+    public static Directive RenderDocument(string token, JsonNode document, object datasources) =>
+        new("Alexa.Presentation.APL.RenderDocument", token, document, datasources);
+}
 
 public static class Reply
 {
@@ -48,6 +58,14 @@ public static class Reply
     /// </summary>
     public static SkillResponse ConfirmIntent(OutputSpeech question) =>
         new(new ResponseBody(question, Reprompt: new Reprompt(question), ShouldEndSession: false, Directives: [new Directive("Dialog.ConfirmIntent")]));
+
+    /// <summary>
+    /// Speaks and shows an APL document, only for requests where <see cref="SkillRequest.SupportsApl"/> is true.
+    /// Leaving shouldEndSession unset keeps the session open without listening, so the screen stays up
+    /// for about 30 seconds and the user can carry on without saying the skill's name.
+    /// </summary>
+    public static SkillResponse Show(OutputSpeech speech, Directive screen, Card? card = null) =>
+        new(new ResponseBody(speech, card, Directives: [screen]));
 
     /// <summary>Ends the session without saying anything.</summary>
     public static SkillResponse End() => new(new ResponseBody(ShouldEndSession: true));
