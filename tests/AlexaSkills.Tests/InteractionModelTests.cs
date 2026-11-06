@@ -2,6 +2,7 @@ using AlexaSkills.Alexa;
 using AlexaSkills.Skills.MajorSystem;
 using AlexaSkills.Skills.TimeClock;
 using AlexaSkills.Tests.TestSupport;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AlexaSkills.Tests;
 
@@ -20,7 +21,7 @@ public class InteractionModelTests
     {
         Skill skill = model switch
         {
-            "timeclock" => new TimeClockSkill(new InMemoryTimeCardStore()),
+            "timeclock" => new TimeClockSkill(new InMemoryTimeCardStore(), NullLogger<TimeClockSkill>.Instance),
             "majorsystem" => new MajorSystemSkill(),
             _ => throw new ArgumentOutOfRangeException(nameof(model)),
         };

@@ -3,15 +3,17 @@ using System.Text.Json.Nodes;
 using AlexaSkills.Alexa;
 using AlexaSkills.Skills.TimeClock;
 using AlexaSkills.Tests.TestSupport;
+using Microsoft.Extensions.Logging.Testing;
 
 namespace AlexaSkills.Tests;
 
 public class TimeClockTests
 {
     private readonly InMemoryTimeCardStore _store = new();
+    private readonly FakeLogger<TimeClockSkill> _logger = new();
     private readonly TimeClockSkill _skill;
 
-    public TimeClockTests() => _skill = new TimeClockSkill(_store);
+    public TimeClockTests() => _skill = new TimeClockSkill(_store, _logger);
 
     [Fact]
     public async Task Adds_hours_and_minutes_to_a_task()
@@ -21,6 +23,7 @@ public class TimeClockTests
         Assert.Equal("added 2 hours and 20 minutes for meetings. meetings has a total of 2 hours and 20 minutes", response.Response.OutputSpeech?.Text);
         Assert.True(response.Response.ShouldEndSession);
         Assert.Equal(140, _store.Load(Requests.UserId).MinutesFor("meetings"));
+        Assert.Equal(0, _logger.Collector.Count);
     }
 
     [Theory]
@@ -62,6 +65,7 @@ public class TimeClockTests
         Assert.Equal("sorry, I did not hear the hours, please say that again", response.Response.OutputSpeech?.Text);
         Assert.False(response.Response.ShouldEndSession);
         Assert.Empty(_store.Rows);
+        Assert.Equal("TimeClock asked again on AddHoursIntent, which had no usable number of hours", _logger.LatestRecord.Message);
     }
 
     [Fact]
@@ -71,6 +75,18 @@ public class TimeClockTests
 
         Assert.Equal("sorry, I did not hear the task, please say that again", response.Response.OutputSpeech?.Text);
         Assert.Empty(_store.Rows);
+    }
+
+    [Theory]
+    [InlineData("AddOneHourIntent", "gardening", "a task not on the list")]
+    [InlineData("AddOneHourIntent", null, "no task")]
+    [InlineData("TellTaskTimeIntent", "gardening", "a task not on the list")]
+    [InlineData("AddMinutesIntent", "email", "no usable number of minutes")]
+    public async Task Logs_why_it_asked_again_but_not_what_was_said(string intent, string? task, string reason)
+    {
+        await Send(Requests.IntentRequest(intent, ("TaskName", task)));
+
+        Assert.Equal($"TimeClock asked again on {intent}, which had {reason}", _logger.LatestRecord.Message);
     }
 
     [Fact]
