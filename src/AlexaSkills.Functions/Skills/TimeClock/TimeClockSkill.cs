@@ -1,9 +1,10 @@
 using System.Globalization;
 using AlexaSkills.Alexa;
+using Microsoft.Extensions.Logging;
 
 namespace AlexaSkills.Skills.TimeClock;
 
-public sealed class TimeClockSkill(ITimeCardStore store) : Skill
+public sealed class TimeClockSkill(ITimeCardStore store, ILogger<TimeClockSkill> logger) : Skill
 {
     private const string CardTitle = "Time Card";
     private const string SayAgain = "please say that again";
@@ -62,20 +63,20 @@ public sealed class TimeClockSkill(ITimeCardStore store) : Skill
         var hours = amount.Hours ?? ReadNumber(intent, "HoursNumber");
         if (hours is null)
         {
-            return Reply.Ask($"sorry, I did not hear the hours, {SayAgain}", SayAgain);
+            return AskAgain(intent, "hours", "no usable number of hours");
         }
 
         var minutes = amount.Minutes ?? ReadNumber(intent, "MinutesNumber");
         if (minutes is null)
         {
-            return Reply.Ask($"sorry, I did not hear the minutes, {SayAgain}", SayAgain);
+            return AskAgain(intent, "minutes", "no usable number of minutes");
         }
 
         var timeCard = await LoadAsync(request, cancellationToken);
         var task = timeCard.FindTask(intent.ResolvedSlotValue("TaskName"));
         if (task is null)
         {
-            return Reply.Ask($"sorry, I did not hear the task, {SayAgain}", SayAgain);
+            return AskAgainForTask(intent);
         }
 
         var added = hours.Value * 60 + minutes.Value;
@@ -120,12 +121,12 @@ public sealed class TimeClockSkill(ITimeCardStore store) : Skill
         return onScreen ? Reply.Show(speech, TimeCardScreen.For(timeCard), card) : Reply.Tell(speech, card);
     }
 
-    private static SkillResponse TellTaskTime(TimeCard timeCard, Intent intent)
+    private SkillResponse TellTaskTime(TimeCard timeCard, Intent intent)
     {
         var task = timeCard.FindTask(intent.ResolvedSlotValue("TaskName"));
         if (task is null)
         {
-            return Reply.Ask($"sorry, I did not hear the task, {SayAgain}", SayAgain);
+            return AskAgainForTask(intent);
         }
 
         var minutes = timeCard.MinutesFor(task);
@@ -145,6 +146,16 @@ public sealed class TimeClockSkill(ITimeCardStore store) : Skill
         return Reply.Tell(
             $"you can track time for: {string.Join(", ", tasks.Take(tasks.Count - 1))}, and {tasks[^1]}",
             new Card("Available Tasks", string.Join(", ", tasks.Select(textInfo.ToTitleCase))));
+    }
+
+    private SkillResponse AskAgainForTask(Intent intent) =>
+        AskAgain(intent, "task", string.IsNullOrWhiteSpace(intent.SlotValue("TaskName")) ? "no task" : "a task not on the list");
+
+    // Logs why, but not what the user said, to show what people ask for that the skill can't do.
+    private SkillResponse AskAgain(Intent intent, string missing, string reason)
+    {
+        logger.LogInformation("{Skill} asked again on {Intent}, which had {Reason}", Name, intent.Name, reason);
+        return Reply.Ask($"sorry, I did not hear the {missing}, {SayAgain}", SayAgain);
     }
 
     private Task<TimeCard> LoadAsync(SkillRequest request, CancellationToken cancellationToken) =>
